@@ -23,7 +23,7 @@ function in_ex_clusive_sort{
     [String]$output
   )
   if($dbfiles.Count -eq 0 -or $dbfiles.Count -gt 4){
-    Write-Host "Too many or not enough database files";
+    
     return
   }
   $unique_entries = @();
@@ -103,6 +103,14 @@ function init_gui(){
   $dbtools_window.Controls.Add($win_toolbar)
   $dbtools_window.ShowDialog();
   # addhelp
+}
+function new_warning_box{
+  Param(
+    [String]$title,
+    [String]$Message
+  )
+  $btype = [System.Windows.MessageBoxButton]::OK;
+  [System.Windows.MessageBox]::($Message,$title,$null,[System.Windows.MessageBoxImage]::Warning) 
 }
 
 init_gui
