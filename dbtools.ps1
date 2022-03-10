@@ -1,3 +1,6 @@
+[void][Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
+[void][Reflection.Assembly]::LoadWithPartialName("System.Drawing")
+
 
 # make these constants
 $EXCLUSIVE_SORT = 1
@@ -43,7 +46,14 @@ function in_ex_clusive_sort{
     $entry | Out-File -FilePath $output -Append
   }
 }
+function open_file_menu{
+  $browser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
+     InitialDirectory = [Environment]::GetFolderPath('Desktop')
+    }
+  $browser.ShowDialog()
 
+
+}
 function init_gui(){
   Add-Type -AssemblyName System.Windows.Forms
   # set up variables
@@ -66,7 +76,7 @@ function init_gui(){
   $open_db_file.Text = "Open Database File"
   $open_controlfile.Text = "Open Control File"
   $help_item.Text = "Help"
-  
+  $open_controlfile.Add_Click({open_file_menu})
   # add sub menues
   $openfiles.DropDownItems.AddRange(@(
     $open_controlfile,
