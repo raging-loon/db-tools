@@ -69,6 +69,11 @@ function open_db_file_menu($sender,$fname){
   $browser.ShowDialog()
   $fname += $browser.FileName
 }
+
+<#
+  Handles all GUI features except for opening files
+
+#>
 function init_gui(){
   Add-Type -AssemblyName System.Windows.Forms
   # set up variables
@@ -80,18 +85,19 @@ function init_gui(){
   $dbtools_window.AutoSize = $true;
   # set up tool bar
   $win_toolbar = New-Object System.Windows.Forms.MenuStrip;
-
   $openfiles = New-Object System.Windows.Forms.ToolStripMenuItem;
   $open_controlfile = New-Object System.Windows.Forms.ToolStripMenuItem;
   $open_db_file = New-Object System.Windows.Forms.ToolStripMenuItem;
   $help_item = New-Object System.Windows.Forms.ToolStripMenuItem;
   $run_tool = New-Object System.Windows.Forms.ToolStripMenuItem;
+  
   # set text
   $openfiles.Text = "File";
   $open_db_file.Text = "Open Database File"
   $open_controlfile.Text = "Open Control File"
   $help_item.Text = "Help"
   $run_tool.Text = "Run";
+  # set functions
   $open_controlfile.Add_Click({open_file_menu $dbtools_window $__controlfile})
   $run_tool.Add_Click({in_ex_clusive_sort -type 1 -controlfile $__controlfile -dbfiles $__dbfile -output "output.txt"})
   $open_db_file.Add_Click({open_db_file_menu $dbtools_window $__dbfile})
