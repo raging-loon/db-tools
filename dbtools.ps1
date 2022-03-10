@@ -1,5 +1,10 @@
-function exclusive_sort{
+# Set-Variable -Name EXCLUSIVE_SORT -Value 1 -Option Constant -Scope Global -Force
+# Set-Variable -Name INCLUSIVE_SORT -Value 2 -Option Constant -Scope Global -Force
+$EXCLUSIVE_SORT = 1
+$INCLUSIVE_SORT = 2
+function in_ex_clusive_sort{
   param (
+    [int32]$type,
     [String]$controlfile,
     [String[]]$dbfiles,
     [String]$output
@@ -10,9 +15,17 @@ function exclusive_sort{
     foreach($line in Get-Content $controlfile){
       
       if($dbcontents -contains $line -or $unique_entries -contains $line){
+        if($type -eq 1){
           continue
+        } else {
+          $unique_entries += $line
+        }
       } else {
-        $unique_entries += $line
+        if($type -eq 1){
+          $unique_entries += $line
+        } else {
+          continue;
+        }
       }
 
     }
@@ -23,6 +36,8 @@ function exclusive_sort{
   }
 }
 
+
+
 $dbarray = @('./db1.txt','./db2.txt')
 # for testing vv
-exclusive_sort ./control.txt -dbfiles $dbarray -output ./output.txt
+in_ex_clusive_sort -type $EXCLUSIVE_SORT ./control.txt -dbfiles $dbarray -output ./output.txt
