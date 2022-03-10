@@ -9,17 +9,23 @@ function do_exclusive_sort{
     [String[]]$dbfiles,
     [String]$output
   )
+  $unique_entries = @();
   for(($i = 0); $i -lt $dbfiles.Count; $i++){
     $dbcontents = Get-Content $dbfiles[$i]
     foreach($line in Get-Content $controlfile){
-      if($dbcontents -contains $line){
-        continue
+      if($dbcontents -contains $line || $unique_entries -contains $line){
+          continue
       } else {
-        $line | Out-File -FilePath $output -Append
+        $unique_entries += $line
       }
+
     }
   }
+  foreach($entry in $unique_entries){
+    $entry | Out-File -FilePath $output -Append
+  }
 }
-$dbarray = @('./db1.txt','./db2.txt')
 
+$dbarray = @('./db1.txt','./db2.txt')
+# for testing vv
 do_exclusive_sort ./control.txt -dbfiles $dbarray -output ./output.txt
