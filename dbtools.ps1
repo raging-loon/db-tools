@@ -1,9 +1,6 @@
 [void][Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 [void][Reflection.Assembly]::LoadWithPartialName("System.Drawing")
 
-$global:__controlfile = $null
-$global:__dbfile = @();
-
 # make these constants
 $EXCLUSIVE_SORT = 1
 $INCLUSIVE_SORT = 2
@@ -22,6 +19,7 @@ function in_ex_clusive_sort{
     [String[]]$dbfiles,
     [String]$output
   )
+  Write-Host $__controlfile
   if($dbfiles.Count -eq 0){
     new_error_box -message "Not enough database files"
     return
@@ -29,6 +27,7 @@ function in_ex_clusive_sort{
     new_error_box -message "Too many database files"
     return
   }
+  
   $unique_entries = @(); 
   for(($i = 0); $i -lt $dbfiles.Count; $i++){
     $dbcontents = Get-Content $dbfiles[$i]
@@ -55,14 +54,20 @@ function in_ex_clusive_sort{
     $entry | Out-File -FilePath $output -Append
   }
 }
-function open_file_menu($Sender){
+function open_file_menu($Sender,$fname){
   $browser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
      InitialDirectory = [Environment]::GetFolderPath('Desktop')
     }
   $browser.ShowDialog()
-  $__controlfile = $browser.FileName
+  $fname = $browser.FileName
 }
-
+function open_db_file_menu($sender,$fname){
+  $browser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
+    InitialDirectory = [Environment]::GetFolderPath('Desktop')
+  }
+  $browser.ShowDialog()
+  $fname += $browser.FileName
+}
 function init_gui(){
   Add-Type -AssemblyName System.Windows.Forms
   # set up variables
@@ -86,8 +91,9 @@ function init_gui(){
   $open_controlfile.Text = "Open Control File"
   $help_item.Text = "Help"
   $run_tool.Text = "Run";
-  $open_controlfile.Add_Click({open_file_menu $dbtools_window})
+  $open_controlfile.Add_Click({open_file_menu $dbtools_window $__controlfile})
   $run_tool.Add_Click({in_ex_clusive_sort -type 1 -controlfile $__controlfile -dbfiles $__dbfile -output "output.txt"})
+  $openfiles.Add_Click({open_db_file_menu $dbtools_window $__dbfile})
   # add sub menues
   $openfiles.DropDownItems.AddRange(@(
     $open_controlfile,
