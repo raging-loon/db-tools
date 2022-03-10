@@ -1,7 +1,7 @@
 [void][Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 [void][Reflection.Assembly]::LoadWithPartialName("System.Drawing")
 
-$__controlfile = ""
+$__controlfile = $null
 $__dbfile = @();
 
 # make these constants
@@ -53,12 +53,12 @@ function in_ex_clusive_sort{
     $entry | Out-File -FilePath $output -Append
   }
 }
-function open_file_menu($Sender, $fname){
+function open_file_menu($Sender){
   $browser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
      InitialDirectory = [Environment]::GetFolderPath('Desktop')
     }
   $browser.ShowDialog()
-  $fname = $browser.FileName
+  $__controlfile = $browser.FileName
 }
 
 function init_gui(){
@@ -84,9 +84,8 @@ function init_gui(){
   $open_controlfile.Text = "Open Control File"
   $help_item.Text = "Help"
   $run_tool.Text = "Run";
-
-  $open_controlfile.Add_Click({open_file_menu $open_controlfile $controlfile})
-  $run_tool.Add_Click({in_ex_clusive_sort -type 1 -controlfile $controlfile -dbfiles $__dbfile -output "output.txt"})
+  $open_controlfile.Add_Click({open_file_menu $open_controlfile $__controlfile})
+  $run_tool.Add_Click({in_ex_clusive_sort 1 $__controlfile -dbfiles $__dbfile -output "output.txt"})
   # add sub menues
   $openfiles.DropDownItems.AddRange(@(
     $open_controlfile,
@@ -105,7 +104,6 @@ function init_gui(){
   $dbtools_window.Controls.Add($win_toolbar)
   $dbtools_window.ShowDialog();
   # addhelp
-  Write-Host $__controlfile
 }
 
 init_gui
