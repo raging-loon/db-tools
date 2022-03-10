@@ -46,13 +46,36 @@ function in_ex_clusive_sort{
 
 function init_gui(){
   Add-Type -AssemblyName System.Windows.Forms
+  # set up variables
+  $__controlfile = ""
+  $__dbfile = @();
+
+  # set up main window
   $dbtools_window = New-Object System.Windows.Forms.Form;
   $dbtools_window.Text = "DB-Tools";
   $dbtools_window.AutoSize = $true;
+  # set up tool bar
   $win_toolbar = New-Object System.Windows.Forms.MenuStrip;
+
   $openfiles = New-Object System.Windows.Forms.ToolStripMenuItem;
+  $open_controlfile = New-Object System.Windows.Forms.ToolStripMenuItem
+  $open_db_file = New-Object System.Windows.Forms.ToolStripMenuItem
+  $help_item = New-Object System.Windows.Forms.ToolStripMenuItem;
+  # set text
+  $openfiles.Text = "File";
+  $open_db_file.Text = "Open Database File"
+  $open_controlfile.Text = "Open Control File"
+  $help_item.Text = "Help"
+  
+  # add sub menues
+  $openfiles.DropDownItems.AddRange(@(
+    $open_controlfile,
+    $open_db_file
+  ))
+  # add tool bar items to tool bar
   $win_toolbar.Items.AddRange(@(
-    $openfiles;
+    $openfiles,
+    $help_item
   ));
   $win_toolbar.Location = New-Object System.Drawing.Point(0,0);
   $win_toolbar.Name ="Toolbar";
