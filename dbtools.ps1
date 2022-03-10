@@ -110,7 +110,8 @@ function new_warning_box{
     [String]$Message
   )
   $btype = [System.Windows.MessageBoxButton]::OK;
-  [System.Windows.MessageBox]::($Message,$title,$null,[System.Windows.MessageBoxImage]::Warning) 
+  $icon = [System.Windows.MessageBoxImage]::Warning;
+  [System.Windows.MessageBox]::($Message,$title,$btype,$icon) 
 }
 
 init_gui
