@@ -1,7 +1,7 @@
 # $controlfile = Get-Content "./5000-words.txt";
 # $db_file = Get-Content "./5000-words.txt.bak";
 # $outfile = "output.txt";
-
+ 
 
 function do_exclusive_sort{
   param (
