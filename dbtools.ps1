@@ -2,8 +2,15 @@
 [void][Reflection.Assembly]::LoadWithPartialName("System.Drawing")
 
 # make these constants
+
 $EXCLUSIVE_SORT = 1
 $INCLUSIVE_SORT = 2
+# may do something with this later
+class database_file{
+  [string]$filepath
+  [int32]$type
+};
+
 
 <#
   @function in_ex_clusive_sort
