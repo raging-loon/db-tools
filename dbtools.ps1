@@ -60,6 +60,7 @@ function open_file_menu($Sender,$fname){
     }
   $browser.ShowDialog()
   $fname = $browser.FileName
+  # $Sender.
 }
 function open_db_file_menu($sender,$fname){
   $browser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
@@ -93,13 +94,18 @@ function init_gui(){
   $run_tool.Text = "Run";
   $open_controlfile.Add_Click({open_file_menu $dbtools_window $__controlfile})
   $run_tool.Add_Click({in_ex_clusive_sort -type 1 -controlfile $__controlfile -dbfiles $__dbfile -output "output.txt"})
-  $openfiles.Add_Click({open_db_file_menu $dbtools_window $__dbfile})
+  $open_db_file.Add_Click({open_db_file_menu $dbtools_window $__dbfile})
   # add sub menues
   $openfiles.DropDownItems.AddRange(@(
     $open_controlfile,
     $open_db_file
     
   ))
+  # make labels
+  
+  $cf_labal = New-Object System.Windows.Forms.Label;
+
+
   # add tool bar items to tool bar
   $win_toolbar.Items.AddRange(@(
     $openfiles,
@@ -110,6 +116,7 @@ function init_gui(){
   $win_toolbar.Name ="Toolbar";
   $win_toolbar.TabIndex = 0;
   $dbtools_window.Controls.Add($win_toolbar)
+  $dbtools_window.Controls.Add($cf_labal)
   $dbtools_window.ShowDialog();
   # addhelp
 }
