@@ -1,8 +1,8 @@
 [void][Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 [void][Reflection.Assembly]::LoadWithPartialName("System.Drawing")
 
-$__controlfile = $null
-$__dbfile = @();
+$global:__controlfile = $null
+$global:__dbfile = @();
 
 # make these constants
 $EXCLUSIVE_SORT = 1
@@ -22,7 +22,6 @@ function in_ex_clusive_sort{
     [String[]]$dbfiles,
     [String]$output
   )
-  Write-Host $controlfile
   if($dbfiles.Count -eq 0 -or $dbfiles.Count -gt 4){
     Write-Host "Too many or not enough database files";
     return
@@ -84,8 +83,8 @@ function init_gui(){
   $open_controlfile.Text = "Open Control File"
   $help_item.Text = "Help"
   $run_tool.Text = "Run";
-  $open_controlfile.Add_Click({open_file_menu $open_controlfile $__controlfile})
-  $run_tool.Add_Click({in_ex_clusive_sort 1 $__controlfile -dbfiles $__dbfile -output "output.txt"})
+  $open_controlfile.Add_Click({open_file_menu $dbtools_window})
+  $run_tool.Add_Click({in_ex_clusive_sort -type 1 -controlfile $__controlfile -dbfiles $__dbfile -output "output.txt"})
   # add sub menues
   $openfiles.DropDownItems.AddRange(@(
     $open_controlfile,
