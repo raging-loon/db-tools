@@ -22,11 +22,14 @@ function in_ex_clusive_sort{
     [String[]]$dbfiles,
     [String]$output
   )
-  if($dbfiles.Count -eq 0 -or $dbfiles.Count -gt 4){
-    
+  if($dbfiles.Count -eq 0){
+    new_error_box -message "Not enough database files"
+    return
+  } elseif($dbfile.Count -gt 4){
+    new_error_box -message "Too many database files"
     return
   }
-  $unique_entries = @();
+  $unique_entries = @(); 
   for(($i = 0); $i -lt $dbfiles.Count; $i++){
     $dbcontents = Get-Content $dbfiles[$i]
     foreach($line in Get-Content $controlfile){
@@ -104,14 +107,14 @@ function init_gui(){
   $dbtools_window.ShowDialog();
   # addhelp
 }
-function new_warning_box{
+function new_error_box{
   Param(
-    [String]$title,
     [String]$Message
   )
+  $title = "Error"
   $btype = [System.Windows.MessageBoxButton]::OK;
-  $icon = [System.Windows.MessageBoxImage]::Warning;
-  [System.Windows.MessageBox]::($Message,$title,$btype,$icon) 
+  $icon = [System.Windows.MessageBoxImage]::Error;
+  [System.Windows.MessageBox]::Show($Message,$title,$btype,$icon) 
 }
 
 init_gui
