@@ -9,11 +9,17 @@ function do_exclusive_sort{
     [String[]]$dbfiles,
     [String]$output
   )
-  Write-Host $dbfiles
   for(($i = 0); $i -lt $dbfiles.Count; $i++){
-    Write-host $dbfiles[$i];
+    $dbcontents = Get-Content $dbfiles[$i]
+    foreach($line in Get-Content $controlfile){
+      if($dbcontents -contains $line){
+        continue
+      } else {
+        $line | Out-File -FilePath $output -Append
+      }
+    }
   }
 }
 $dbarray = @('./db1.txt','./db2.txt')
 
-do_exclusive_sort -ParameterName /control.txt $dbarray. ./output.txt
+do_exclusive_sort ./control.txt -dbfiles $dbarray -output ./output.txt
