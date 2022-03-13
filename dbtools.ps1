@@ -115,7 +115,7 @@ function init_gui(){
     
   ))
   # make labels
-  
+   
   $cf_labal = New-Object System.Windows.Forms.Label;
 
 
