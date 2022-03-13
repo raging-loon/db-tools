@@ -1,15 +1,22 @@
+# cli args
+Param(
+    [Parameter()]
+    [Switch]$start_gui,
+    [int32]$type,
+    [String]$controlfile,
+    [String[]]$dbfiles,
+    [String]$outputfile    
+)
+
+
 [void][Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 [void][Reflection.Assembly]::LoadWithPartialName("System.Drawing")
+
 
 # make these constants
 
 $EXCLUSIVE_SORT = 1
 $INCLUSIVE_SORT = 2
-# may do something with this later
-class database_file{
-  [string]$filepath
-  [int32]$type
-};
 
 
 <#
@@ -27,6 +34,9 @@ function in_ex_clusive_sort{
     [String]$output
   )
   Write-Host $__controlfile
+  foreach($i in $dbfiles){
+    Write-Host "Debug: db_file: $i";
+  }
   if($dbfiles.Count -eq 0){
     new_error_box -message "Not enough database files"
     return
@@ -131,7 +141,7 @@ function init_gui(){
   $dbtools_window.Controls.Add($win_toolbar)
   $dbtools_window.Controls.Add($cf_labal)
   $dbtools_window.ShowDialog();
-  # addhelp
+  # add help
 }
 function new_error_box{
   Param(
@@ -143,4 +153,12 @@ function new_error_box{
   [System.Windows.MessageBox]::Show($Message,$title,$btype,$icon) 
 }
 
-init_gui
+
+
+
+if($start_gui){
+    init_gui
+} else {
+    in_ex_clusive_sort $type $controlfile -dbfile $dbfiles -output $outputfile
+
+}
