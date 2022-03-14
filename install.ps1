@@ -1,1 +1,2 @@
-Install-Module -Name ImportExcel -Force
+
+Install-Module -Name ImportExcel
