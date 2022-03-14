@@ -43,7 +43,8 @@ if($help){
 	Write-Host '-dbfile1-3: - use dbfile1, dbfile2, etc. These are the database files to run -controlfile against'
 	Write-Host '-column: - column that should be checked'
 	Write-Host '-output: - Saves the results in a file of your choice'
-	Write-Host '-start_gui - Start the GUI, still in developmnet'
+	Write-Host '-start_gui - Start the GUI, still in development'
+	Write-Host "Example: .\excel-tools.ps1 -controlfile .\control.txt -dbfile1 '.\db1.xlsx' -dbfile2 '.\User Database Test.xlsx' -output output.txt -column 'Username'"
 } elseif($start_gui){
 	Write-Host "GUI Still in development"
 	exit
